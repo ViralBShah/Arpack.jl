@@ -109,12 +109,6 @@ function _eigs(A, B;
     end
     isshift && which == :SM && @warn "Use of :SM in shift-and-invert mode is not recommended, use :LM to find eigenvalues closest to sigma"
 
-    if which==:SM && !isshift # transform into shift-and-invert method with sigma = 0
-        isshift=true
-        sigma=zero(T)
-        which=:LM
-    end
-
     if (explicittransform==:auto)
         # Try to automatically detect if it is good to carry out an explicittransform
         if (isgeneral && (isshift  || which==:LM))
@@ -165,6 +159,9 @@ function _eigs(A, B;
     end
 
     whichstr = "LM"
+    if which == :SM
+        whichstr = "SM"
+    end
     if which == :BE
         whichstr = "BE"
     end
